@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職業性ストレス簡易調査</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.jsライブラリのインクルード -->
+    <script>
+        let questions;
+
+        function getQuestions() {
+            return [
+                {
+                    "id": "q1",
+                    "text": "活気が湧いてくる",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [4,3,2,1]
+                },
+                {
+                    "id": "q2",
+                    "text": "元気がいっぱいだ",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [4,3,2,1]
+                },
+                {
+                    "id": "q3",
+                    "text": "生き生きする",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [4,3,2,1]
+                },
+                {
+                    "id": "q4",
+                    "text": "怒りを感じる",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q5",
+                    "text": "内心腹立たしい",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q6",
+                    "text": "イライラしている",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q7",
+                    "text": "ひどく疲れた",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q8",
+                    "text": "へとへとだ",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q9",
+                    "text": "だるい",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q10",
+                    "text": "気がはりつめている",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q11",
+                    "text": "不安だ",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q12",
+                    "text": "落ち着かない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q13",
+                    "text": "憂鬱だ(ゆううつだ)",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q14",
+                    "text": "何をするのも面倒だ",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q15",
+                    "text": "物事に集中できない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q16",
+                    "text": "気分が晴れない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q17",
+                    "text": "仕事が手につかない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q18",
+                    "text": "悲しいと感じる",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q19",
+                    "text": "めまいがする",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q20",
+                    "text": "体のふしぶしが痛む",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q21",
+                    "text": "頭が重かったり頭痛がする",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q22",
+                    "text": "首筋や肩がこる",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q23",
+                    "text": "腰が痛い",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q24",
+                    "text": "目が疲れる",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q25",
+                    "text": "動悸や息切れがする",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q26",
+                    "text": "胃腸の具合が悪い",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q27",
+                    "text": "食欲がない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q28",
+                    "text": "便秘や下痢をする",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                },
+                {
+                    "id": "q29",
+                    "text": "よく眠れない",
+                    "options": ["ほとんどなかった", "時々あった","しばしばあった","いつもあった"],
+                    "scores": [1,2,3,4]
+                }
+                // ... 他の質問も同様に追加
+            ];
+        }
+
+        function renderQuestions(questions) {
+            const container = document.getElementById('questions-container');
+
+            questions.forEach(question => {
+                const questionDiv = document.createElement('div');
+                questionDiv.innerHTML = `<h3>${question.text}</h3>`;
+
+                question.options.forEach((option, index) => {
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = question.id;
+                    input.value = question.scores[index];
+                    input.id = `${question.id}-${index}`;
+                    const label = document.createElement('label');
+                    label.htmlFor = input.id;
+                    label.textContent = option;
+
+                    questionDiv.appendChild(input);
+                    questionDiv.appendChild(label);
+                });
+
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function calculateScore() {
+            var totalScore = 0;
+
+            questions.forEach(question => {
+                var answer = document.querySelector('input[name="' + question.id + '"]:checked');
+                if (answer) {
+                    totalScore += parseInt(answer.value);
+                }
+            });
+
+            document.getElementById('result1').innerHTML = 'Your total score: ' + totalScore;
+
+            if (totalScore >= 77) {
+                document.getElementById('result2').innerHTML = '注意: あなたの総合スコアは77点以上です。一度正式なカウンセリングを受けてください'
+            } else{
+                document.getElementById('result2').innerHTML = 'いい職場ですね!'
+            }
+            const pastScores = JSON.parse(localStorage.getItem('pastScores')) || [];
+            const currentDate = new Date().toLocaleDateString();
+            pastScores.push({ score: totalScore, date: currentDate });
+            localStorage.setItem('pastScores', JSON.stringify(pastScores));
+
+            // 過去のスコアを表示
+            displayPastScores();
+
+            // 現在のスコアと日付を表示
+            document.getElementById('current-score').innerHTML = `現在のスコア (${currentDate}): ${totalScore}`;
+        }
+
+        function displayPastScores() {
+            const pastScores = JSON.parse(localStorage.getItem('pastScores')) || [];
+            const pastScoresContainer = document.getElementById('past-scores-container');
+            pastScoresContainer.innerHTML = '';
+
+            if (pastScores.length > 0) {
+                const chartData = {
+                    labels: pastScores.map(entry => entry.date),
+                    datasets: [{
+                        label: '過去のスコア',
+                        data: pastScores.map(entry => entry.score),
+                        borderColor: 'rgb(75, 192, 192)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                };
+
+                const ctx = document.getElementById('score-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: chartData,
+                });
+
+                pastScoresContainer.innerHTML = '<h3>過去のスコア:</h3><ul>';
+                pastScores.forEach(entry => {
+                    pastScoresContainer.innerHTML += `<li>${entry.date}: ${entry.score}</li>`;
+                });
+                pastScoresContainer.innerHTML += '</ul>';
+            }
+        }
+
+
+        window.onload = function () {
+            questions = getQuestions();
+            renderQuestions(questions);
+            displayPastScores();
+        };
+    </script>
+</head>
+<body>
+    <h1>職業性ストレス簡易調査</h1>
+    <h2>直近1ヶ月間のあなたの状態について伺います。
+        最も当てはまるものに◯を付けてください<h2>
+    <div id="questions-container"></div>
+    <button onclick="calculateScore()">合計点数</button>
+    <p id="result1"></p>
+    <p id="result2"></p>
+
+    <!-- 過去のスコアとグラフを表示 -->
+    <div id="past-scores-container"></div>
+    <canvas id="score-chart" width="400" height="200"></canvas>
+
+    <!-- 現在のスコアと日付を表示 -->
+    <p id="current-score"></p>
+</body>
+</html>
